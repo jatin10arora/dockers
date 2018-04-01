@@ -1,0 +1,24 @@
+version: "3"
+services:
+  web:
+    image: jatin10arora/javaapp:db
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "8080:8080"
+    networks:
+      - webnet  
+  db:
+    image: jatin10arora/mysql:db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: changeme
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - webnet
+networks:
+  webnet:
